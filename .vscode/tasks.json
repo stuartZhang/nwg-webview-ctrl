@@ -1,0 +1,116 @@
+{
+    "version": "2.0.0",
+    "tasks": [{
+        "label": "clean",
+        "args": ["clean"],
+        "command": "cargo",
+        "presentation": {
+            "reveal": "always"
+        }
+    }, {
+        "label": "Run:例程",
+        "args": [
+            "run",
+            "--example",
+            "${fileBasenameNoExtension}",
+            "--",
+            "--url=https://www.minxing365.com"
+        ],
+        "options": {
+            "CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG": "true"
+        },
+        "command": "cargo",
+        "presentation": {
+            "reveal": "always"
+        },
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        },
+        "problemMatcher": [{
+            "owner": "rust",
+            "fileLocation": ["relative", "${workspaceRoot}"],
+            "pattern": {
+                "regexp": "^(.*):(\\d+):(\\d+):\\s+(\\d+):(\\d+)\\s+(warning|error):\\s+(.*)$",
+                "file": 1,
+                "line": 2,
+                "column": 3,
+                "endLine": 4,
+                "endColumn": 5,
+                "severity": 6,
+                "message": 7
+            }
+        }]
+    }, {
+        "label": "test",
+        "args": ["test"],
+        "command": "cargo",
+        "presentation": {
+            "reveal": "always"
+        },
+        "group": {
+            "kind": "test",
+            "isDefault": false
+        },
+        "problemMatcher": [{
+                "owner": "rust",
+                "fileLocation": ["relative", "${workspaceRoot}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(\\d+):(\\d+)\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "endLine": 4,
+                    "endColumn": 5,
+                    "severity": 6,
+                    "message": 7
+                }
+            },
+            {
+                "owner": "rust",
+                "fileLocation": ["relative", "${workspaceRoot}"],
+                "severity": "error",
+                "pattern": {
+                    "regexp": "^.*panicked\\s+at\\s+'(.*)',\\s+(.*):(\\d+)$",
+                    "message": 1,
+                    "file": 2,
+                    "line": 3
+                }
+            }
+        ]
+    }, {
+        "label": "bench",
+        "args": ["bench"],
+        "command": "cargo",
+        "presentation": {
+            "reveal": "always"
+        },
+        "group": "test",
+        "problemMatcher": [{
+                "owner": "rust",
+                "fileLocation": ["relative", "${workspaceRoot}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(\\d+):(\\d+)\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "endLine": 4,
+                    "endColumn": 5,
+                    "severity": 6,
+                    "message": 7
+                }
+            },
+            {
+                "owner": "rust",
+                "fileLocation": ["relative", "${workspaceRoot}"],
+                "severity": "error",
+                "pattern": {
+                    "regexp": "^.*panicked\\s+at\\s+'(.*)',\\s+(.*):(\\d+)$",
+                    "message": 1,
+                    "file": 2,
+                    "line": 3
+                }
+            }
+        ]
+    }]
+}

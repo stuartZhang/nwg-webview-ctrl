@@ -1,0 +1,35 @@
+[build]
+rustflags = [
+    "-Wabsolute_paths_not_starting_with_crate", # 以`::`导入`external crate`；以`crate::`绝对路径导入本地模块
+    "-Welided_lifetimes_in_paths", # 不可省略【类型】标注上的生命周期参数。
+    "-Wexplicit_outlives_requirements", # `&'a T`就意味着`where T: 'a`，而不需要标注出来。
+    "-Dkeyword_idents",
+    "-Wmacro_use_extern_crate", # 避免一股脑地导入全部第三方宏进入当前作用域。推荐按需导入。
+    "-Dmeta_variable_misuse",
+    "-Wmissing_abi",
+    "-Wmissing_copy_implementations",
+    "-Wmissing_debug_implementations",
+    "-Wmissing_docs",
+    "-Wmust_not_suspend", # 与 #[must_not_suspend] 元属性配合使用。即，凡是被该元属性装饰的【类型】的实例，在异步函数/块内，都是不能跨跃`.await`点“存活”。而，必须在`.await`点之前被显示地释放（比如，代码块·或·显示地`drop()`）。
+    "-Dnon_ascii_idents",
+    "-Wnon_exhaustive_omitted_patterns", # 被强制添加的`_ => {...}`匹配条件分支何时真正地捕获到了被`sub crate`添加的新字段/枚举值了。
+    "-Wnoop_method_call",
+    "-Dpointer_structural_match", # 在模式匹配内不能使用【函数指针】与【胖指针】
+    "-Drust_2021_incompatible_closure_captures", # `Rust 2021`对【结构体】变量的捕获粒度已经精细入【字段】了。但是，它（负面）影响了：（1）结构体多个字段的`drop`次序；（2）【字段】的数据类型并没实现【结构体】实现的`auto trait`（比如，`Send trait`），但我们还想该字段还能受到【结构体】的庇护。
+    "-Wrust_2021_incompatible_or_patterns", # 规则宏定义中的`pat`说明符从`2021`版次开始，可匹配`|`了。为了保留旧语义，请使用`pat_param`说明符。
+    "-Drust_2021_prefixes_incompatible_syntax",
+    "-Drust_2021_prelude_collisions",
+    "-Wsingle_use_lifetimes",
+    "-Wtrivial_casts", # 不接受`let y = x as T`，而接受`let y: T = x;`，因为`x`类型`U`是`T`的子类或子集。
+    "-Dtrivial_numeric_casts",
+    "-Wunreachable_pub", # 对仅在当前`crate`范围内可见的项`Item`，请使用`pub(crate)`而不是`pub`，因为后者容易让读者误解为该项也对下游`crate`可见 — 即，其可见域超出了当前`crate`。
+    "-Wunsafe_op_in_unsafe_fn", # 多用粒度更细的`unsafe block`而不是粗粒度的`unsafe fn`
+    "-Wunstable_features",
+    "-Aunused_crate_dependencies", # 静默此`lint`：`use foo as _;`
+    "-Dunused_extern_crates", # 静默此`lint`：`extern crate foo as _;`
+    "-Wunused_import_braces",
+    "-Dunused_lifetimes",
+    "-Wunused_macro_rules", # 若在静默该`lint`，需要在整个宏定义上，而不是宏定义内的某个规则项上。
+    "-Wunused_qualifications",
+    "-Wvariant_size_differences" # 长短不依的【枚举值】的大小都会被对齐于【枚举类】中*最长*的那个【枚举值】，所以若某个【枚举值】比【枚举类】中其它的【枚举值】大出来太多（3倍以上），就会造成严重的内存浪费。解决方案：将特别大的【枚举值】“甩”到【堆】上去保存（即，`Box::new(...)`）；从而，确保在【栈】上被对齐后的内存占用均匀“不留白”。
+]

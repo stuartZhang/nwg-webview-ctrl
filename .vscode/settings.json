@@ -1,0 +1,4 @@
+{
+    "files.trimTrailingWhitespace": true,
+    "rust-analyzer.procMacro.attributes.enable": true
+}
