@@ -1,6 +1,6 @@
 mod builder;
 use ::deferred_future::LocalDeferredFuture;
-use ::futures::{future::{FutureExt, Map, Shared}, executor};
+use ::futures::{future::Shared, executor};
 use ::nwg::{self as nwg, ControlHandle, EventHandler, Frame, NwgError, RawEventHandler};
 use ::std::{cell::RefCell, ops::Deref, rc::Rc};
 use ::webview2::{Controller, Environment, WebView};
@@ -21,7 +21,7 @@ pub struct WebviewContainer {
     is_closing: Rc<RefCell<bool>>,
     frame: Rc<RefCell<Frame>>,
     webview_ctrl: Rc<RefCell<Option<Controller>>>,
-    ready_fut: Option<Shared<LocalDeferredFuture<Option<(Environment, Controller, WebView)>>>>,
+    ready_fut: Option<Shared<LocalDeferredFuture<(Environment, Controller, WebView)>>>,
     event_handle: Option<EventHandler>,
     raw_event_handle: Option<RawEventHandler>
 }
@@ -59,12 +59,8 @@ impl WebviewContainer {
     pub fn builder<'a>() -> WebviewContainerBuilder<'a> {
         WebviewContainerBuilder::default()
     }
-    pub fn ready_fut(&self) -> NwgResult<Map<Shared<LocalDeferredFuture<Option<(Environment, Controller, WebView)>>>, Box<dyn FnOnce(Option<(Environment, Controller, WebView)>) -> (Environment, Controller, WebView)>>> {
-        self.ready_fut.clone().map(|fut|
-            fut.map(Box::new(|webview: Option<(Environment, Controller, WebView)>| -> (Environment, Controller, WebView) {
-                webview.unwrap()
-            }) as Box<dyn FnOnce(Option<(Environment, Controller, WebView)>) -> (Environment, Controller, WebView)>)
-        ).ok_or(NwgError::control_create("Webview 控件初始化失败或还未被初始化"))
+    pub fn ready_fut(&self) -> NwgResult<Shared<LocalDeferredFuture<(Environment, Controller, WebView)>>> {
+        self.ready_fut.clone().ok_or(NwgError::control_create("Webview 控件初始化失败或还未被初始化"))
     }
     pub fn ready_block(&self) -> NwgResult<(Environment, Controller, WebView)> {
         Ok(executor::block_on(self.ready_fut()?))

@@ -154,7 +154,7 @@ impl<'a> WebviewContainerBuilder<'a> {
                 #[cfg(debug_assertions)]
                 println!("[WebviewContainerBuilder][build]Webview 实例化成功");
                 webview_ctrl.borrow_mut().replace(webview_ctrl_core.clone());
-                defer.borrow_mut().complete(Some((env, webview_ctrl_core, webview)));
+                defer.borrow_mut().complete((env, webview_ctrl_core, webview));
                 Ok(())
             });
             if let Some(webview_env) = self.webview_env {
