@@ -21,7 +21,7 @@
 ## 运行环境要求
 
 1. 预安装`Microsoft Edge 86+`浏览器的`Windows`操作系统。或
-2. 已安装[Evergreen WebView2 Runtime](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution#understand-the-webview2-runtime-and-installer-preview)的其它版本`Windows`操作系统。
+2. 已安装[Evergreen WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/consumer)的其它版本`Windows`操作系统。
 
 一般来讲，`Windows 11`与打过升级补丁的`Windows 10`都可以直接运行包含了此图形控件的应用程序。
 
