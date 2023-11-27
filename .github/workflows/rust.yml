@@ -16,5 +16,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - script: |
+        curl -sSf -o rustup-init.exe https://win.rustup.rs
+        rustup-init.exe -y --profile minimal --default-toolchain nightly --default-host x86_64-pc-windows-msvc
+        set PATH=%PATH%;%USERPROFILE%\.cargo\bin
+        echo "##vso[task.setvariable variable=PATH;]%PATH%;%USERPROFILE%\.cargo\bin"
+      displayName: "Install rust (windows)"
     - name: Build
       run: cargo build --verbose
