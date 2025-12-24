@@ -84,7 +84,7 @@ let mut webview_container = WebviewContainer::default();
 WebviewContainer::builder().parent(&window).window(&window).build(&mut webview_container)?;
 // 由控件对象的成员方法阻塞主线程，和等待 Webview 完全就绪
 let (_, _, webview) = webview_container.ready_block().unwrap();
-webview.navigate("https://www.minxing365.com").unwrap();
+webview.navigate("https://www.baidu.com").unwrap();
 ```
 
 ### 异步阻塞
@@ -111,7 +111,7 @@ let mut executor = {
    executor.spawner().spawn_local(async move {
       // 4. 将异步任务注入异步执行器
       let (_, _, webview) = webview_ready_fut.await;
-      webview.navigate("https://www.minxing365.com").unwrap();
+      webview.navigate("https://www.baidu.com").unwrap();
       Ok::<_, Box<dyn Error>>(())
    }).unwrap();
    executor
@@ -275,7 +275,7 @@ impl DemoUi {
 fn main() -> Result<(), Box<dyn Error>> {
   let demo_ui_app = DemoUi::build_ui(Default::default())?;
   // 构造【异步·执行器】
-  let mut executor = demo_ui_app.executor("https://www.minxing365.com")?;
+  let mut executor = demo_ui_app.executor("https://www.baidu.com")?;
   // 阻塞主线程，等待用户手动关闭主窗体
   nwg::dispatch_thread_events_with_callback(move ||
     // 以 win32 UI 的事件循环为【反应器】，对接 futures crate 的【执行器】
@@ -399,3 +399,4 @@ fn main() -> Result<(), Box<dyn Error>> {
 * [获取当前网页是如何路由打开的](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/overview-features-apis?tabs=dotnetcsharp#navigation-kind)
 
 这个汇总列表直接参考自`Microsoft MSDN`文档。其中有些`Win32 COM ABI`接口还没有被`webview2-sys crate`封装，所以需要亲自动手编写`FFI`代码才能正常调用许多高级功能接口。
+
